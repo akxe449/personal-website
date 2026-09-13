@@ -1,255 +1,195 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Akshita Sharma — Portfolio</title>
-  <meta name="description" content="Portfolio of Akshita Sharma: projects, research interests, and contact." />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0e1116;
-      --bg-2: #0b0e13;
-      --text: #e6edf3;
-      --muted: #a3adba;
-      --accent: #26c6da;
-      --accent-2: #7dd3fc;
-      --accent-3: #a78bfa;
-      --card: rgba(18,22,30,0.55);
-      --card-br: rgba(255,255,255,.08);
-      --max: 1040px;
-      --r: 14px;
-      --shadow: 0 8px 24px rgba(0,0,0,.35);
-    }
-
-    * { box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); background: var(--bg); overflow-x: hidden; }
-    html { scroll-behavior: smooth; }
-
-    /* Gradient animated background blobs */
-    body::before, body::after {
-      content: ""; position: fixed; width: 600px; height: 600px; border-radius: 50%; filter: blur(120px); opacity: 0.35; z-index: -1; animation: float 18s infinite alternate ease-in-out;
-    }
-    body::before { background: var(--accent); top: -150px; left: -200px; }
-    body::after { background: var(--accent-3); bottom: -150px; right: -200px; animation-delay: 6s; }
-    @keyframes float { 0% { transform: translateY(0) translateX(0);} 100% { transform: translateY(-40px) translateX(30px);} }
-
-    .container { max-width: var(--max); margin: 0 auto; padding: 0 22px; }
-    a { color: inherit; text-decoration: none; }
-
-    /* Scroll progress */
-    .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-3)); z-index: 1000; transition: width .12s ease; }
-
-    /* Header */
-    header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); background: rgba(14,17,22,0.65); border-bottom: 1px solid rgba(255,255,255,.08); }
-    .nav { height: 64px; display: flex; align-items: center; justify-content: space-between; }
-    .brand a { font-weight: 700; letter-spacing: .2px; font-size: 1.1rem; position: relative; }
-    .brand a::after { content:""; position:absolute; left:0; bottom:-3px; width:100%; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent-3)); opacity:0; transform:scaleX(0); transform-origin:left; transition:.3s; }
-    .brand a:hover::after { opacity:1; transform:scaleX(1); }
-
-    .nav-links { display: flex; gap: 6px; }
-    .nav-links a { padding: 8px 12px; border-radius: 8px; color: #cbd3dd; position:relative; overflow:hidden; }
-    .nav-links a::after{ content:""; position:absolute; left:12px; right:12px; bottom:6px; height:2px; border-radius:2px; background: linear-gradient(90deg, var(--accent), transparent); transform: scaleX(0); transform-origin: left; transition: transform .25s ease; }
-    .nav-links a:hover{ color:#fff; }
-    .nav-links a:hover::after{ transform: scaleX(1); }
-    .nav-links a.active{ color: var(--accent); }
-
-    section { padding: 90px 0; }
-    .eyebrow { color: var(--muted); font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; }
-    h1 { font-size: clamp(32px, 4.8vw, 48px); margin: 10px 0 12px; background: linear-gradient(90deg,var(--accent),var(--accent-2),var(--accent-3)); -webkit-background-clip: text; color: transparent; background-size:200% auto; animation: shimmer 6s linear infinite; }
-    @keyframes shimmer { to { background-position:200% center; } }
-
-    .rule { width: 70px; height: 3px; border-radius: 2px; margin: 18px 0 14px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); box-shadow: 0 0 14px rgba(38,198,218,.25); animation: flow 2.2s linear infinite; background-size: 200% 100%; }
-    @keyframes flow { to { background-position: 200% 0; } }
-
-    .grid { display: grid; gap: 18px; }
-    @media (min-width: 820px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 819px) { .grid-3 { grid-template-columns: 1fr; } }
-
-    .card {
-      position: relative;
-      background: rgba(18, 22, 30, 0.35);
-      border: 1px solid rgba(122, 163, 204, 0.18);
-      border-radius: var(--r);
-      padding: 18px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.04);
-      backdrop-filter: blur(10px) saturate(120%);
-      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-      transform-style: preserve-3d;
-      will-change: transform;
-      overflow: hidden;
-    }
-    .card::before { content:""; position:absolute; inset:-1px; background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.08) 20%, transparent 40%); transform: translateX(-120%); transition: transform .6s ease; pointer-events:none; }
-    .card:hover { transform: translateY(-6px) scale(1.02); box-shadow:0 18px 38px rgba(0,0,0,.45); }
-    .card:hover::before{ transform: translateX(120%); }
-    .card h3 { margin: 6px 0 6px; font-size: 1.05rem; }
-    .card p { color: #d0d8e0; font-size: .96rem; }
-
-    .skills { display: flex; flex-wrap: wrap; gap: 10px; }
-    .chip { padding: 8px 12px; border-radius: 999px; font-weight: 600; font-size: .9rem; background: rgba(18,26,38,0.7); border: 1px solid #263244; color: #d9e2ec; opacity: 0; transform: translateY(6px); transition: opacity .4s ease, transform .4s ease, box-shadow .25s ease; }
-    .chip.show { opacity: 1; transform: none; }
-    .chip:hover { box-shadow: 0 6px 22px rgba(167,139,250,.25); border-color: var(--accent-3); }
-
-    .contact-links { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
-    .icon-btn { display:inline-flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background: rgba(18,26,38,0.7); border:1px solid #263244; color:#d7dee7; transition: all .25s ease; backdrop-filter:blur(10px); }
-    .icon-btn:hover { background: rgba(38,198,218,0.08); border-color:var(--accent-2); transform: translateY(-2px) scale(1.04); box-shadow:0 14px 28px rgba(0,0,0,.35); }
-    .icon { width:18px; height:18px; }
-
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.show { opacity:1; transform:none; }
-
-    footer { padding: 44px 0; color: var(--muted); border-top: 1px solid rgba(255,255,255,.08); margin-top: 20px; text-align:center; }
-      /* Gradient animated headline */
-    .gradient-text {
-      background: linear-gradient(90deg, var(--accent), var(--accent-2), #a78bfa, var(--accent));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
-      background-size: 300% 100%;
-      animation: hueflow 8s linear infinite;
-      text-shadow: 0 2px 24px rgba(38,198,218,.12);
-    }
-    @keyframes hueflow { to { background-position: 300% 0; } }
-
-    /* Header brand glow */
-    .brand a{ color: inherit; }
-    .brand a:hover { text-shadow: 0 0 18px rgba(125,211,252,.45); }
-
-    /* Glassmorphism polish for header */
-    header { backdrop-filter: blur(10px) saturate(120%); }
-
-    /* Parallax blobs */
-    .blobs { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .blob { position: absolute; width: 520px; height: 520px; border-radius: 50%; filter: blur(60px); opacity: .25; mix-blend-mode: screen; }
-    .b1 { background: radial-gradient(circle at 30% 30%, var(--accent), transparent 60%); top: -120px; left: -140px; }
-    .b2 { background: radial-gradient(circle at 70% 70%, var(--accent-2), transparent 60%); bottom: -160px; right: -120px; }
-    .b3 { background: radial-gradient(circle at 50% 50%, #a78bfa, transparent 60%); top: 40%; left: 55%; transform: translate(-50%, -50%); }
-
-    /* Ensure main content is above blobs */
-    header, main, footer { position: relative; z-index: 1; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .gradient-text { animation: none; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Akshita Sharma — AI / Systems Engineer</title>
+<meta name="description" content="Akshita Sharma — Computer Science student building production AI systems, computer vision pipelines and secure software.">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- floating gradient blobs -->
-  <div class="blobs" aria-hidden="true">
-    <span class="blob b1"></span>
-    <span class="blob b2"></span>
-    <span class="blob b3"></span>
+<div class="grid-bg"></div>
+
+<header class="nav">
+  <a class="logo" href="#top">AKSHITA<span>_</span></a>
+  <div class="nav-center">
+    <a href="#experience">EXPERIENCE</a>
+    <a href="#featured">WORK</a>
+    <a href="#research">RESEARCH</a>
   </div>
-  <div class="progress" id="progress"></div>
-  <header>
-    <div class="container nav">
-      <div class="brand"><a href="#top">Akshita Sharma</a></div>
-      <nav class="nav-links">
-        <a href="#about" class="active">About</a>
-        <a href="#projects">Projects</a>
-        <a href="#skills">Skills</a>
-        <a href="#contact">Contact</a>
-      </nav>
+  <a class="nav-cta" href="#contact">CONTACT ↗</a>
+</header>
+
+<main id="top">
+
+  <!-- 00 / RECRUITER SNAPSHOT -->
+  <section class="hero">
+    <div class="hero-topline">
+      <span>COMPUTER SCIENCE · AI · SYSTEMS</span>
+      <span>NOIDA / INDIA · 2026</span>
     </div>
-  </header>
 
-  <main class="container" id="top">
-    <section id="about">
-      <div class="eyebrow">Portfolio</div>
-      <h1 class="gradient-text">Hi, I’m Akshita — a CS sophomore committed to rigorous learning and problems that bend my brain</h1>
-      <div class="rule"></div>
-      <p class="lede reveal">CSE undergrad @ Amity University (class of 2028). I have a strong interest in AI research, competitive programming, and algorithms. My work and learning focus on bridging theoretical depth with practical experimentation. Beyond academics, I enjoy problem‑solving in different forms—programming, cube‑solving, and abstract logic puzzles. I’m driven by precision, intellectual rigour, and the pursuit of extraordinary outcomes. I believe in “Show, not tell.”</p>
-    </section>
-
-    <section id="projects">
-      <h2 class="reveal">Projects & Research</h2>
-      <div class="rule"></div>
-      <div class="grid grid-3">
-        <article class="card reveal">
-          <h3>AuthMate — Chrome Extension For Codeforces</h3>
-          <p>After an ICPC World Finalist’s account was hacked and resold on Telegram, I built AuthMate, a Chrome extension for secure two-factor authentication on Codeforces. The system implements a passwordless login flow with AES + RSA + JWT encryption, ensuring no plaintext credentials are ever stored or transmitted. It also strengthens browser defences against credential theft and includes a masked 32-character password generator.</p>
-        </article>
-        <article class="card reveal">
-          <h3>AI‑Powered Indian Classical Music Analyzer</h3>
-        </p> This project explores how machine learning can interpret and generate elements of Indian classical music. I trained deep learning models (Keras Sequential API) to detect tonic and taal, achieving 96% and 94% accuracy on IIT-Bombay + Kaggle datasets. I also fine-tuned Meta’s MusicGen to synthesise ragas like Raag Bhairavi on sitar and flute. </p>
-        </article>
-        <article class="card reveal">
-          <h3>Ongoing Research: Mathematical Reasoning & Theorem Proving with LLMs</h3>
-          <p>Surveying recent advances in ATP/ITP; analyzing flaws in current approaches to propose benchmark-beating
-improvements.</p>
-        </article>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="availability"><i></i> CURRENTLY ENGINEERING AT MEDECRO.AI</div>
+        <h1>AKSHITA<br><b>SHARMA</b></h1>
+        <p class="hero-role">AI / SOFTWARE ENGINEER IN TRAINING</p>
+        <p class="hero-desc">I build production AI systems, computer-vision pipelines and security-focused software — with an emphasis on the engineering underneath the demo.</p>
+        <div class="hero-links">
+          <a href="#featured" class="solid">SEE THE WORK ↓</a>
+          <a href="https://github.com/akxe449" target="_blank" rel="noreferrer">GITHUB ↗</a>
+          <a href="https://www.linkedin.com/in/akshitasharma7" target="_blank" rel="noreferrer">LINKEDIN ↗</a>
+        </div>
       </div>
-    </section>
 
-    <section id="skills">
-      <h2 class="reveal">Skills</h2>
-      <div class="rule"></div>
-      <div class="skills" id="skillsChips">
-        <span class="chip">PyTorch</span>
-        <span class="chip">Python</span>
-        <span class="chip">C++</span>
-        <span class="chip">C</span>
-        <span class="chip">DSA</span>
+      <aside class="proof">
+        <div class="proof-head"><span>FAST READ</span><span>01—04</span></div>
+        <div class="proof-number"><strong>9</strong><span>DL MODELS<br>IN PRODUCTION</span></div>
+        <div class="proof-number"><strong>92%</strong><span>VITICARE<br>LESION IoU</span></div>
+        <div class="proof-number"><strong>50+</strong><span>AUTHMATE<br>USERS</span></div>
+        <div class="proof-number"><strong>97%</strong><span>CAPTCHA<br>ACCURACY</span></div>
+      </aside>
+    </div>
+
+    <div class="hero-strip">
+      <span>PYTORCH</span><b>×</b><span>LANGGRAPH</span><b>×</b><span>FASTAPI</span><b>×</b><span>RUST</span><b>×</b><span>RAG</span><b>×</b><span>MLOPS</span><b>×</b><span>COMPUTER VISION</span>
+    </div>
+  </section>
+
+  <!-- 01 / EXPERIENCE -->
+  <section class="section" id="experience">
+    <div class="section-head">
+      <div class="section-no">01</div>
+      <div><p>EXPERIENCE</p><h2>SHIPPING<br><em>REAL SYSTEMS.</em></h2></div>
+    </div>
+
+    <article class="experience-card">
+      <div class="exp-brand">
+        <div class="exp-index">CURRENT</div>
+        <h3>Medecro<span>.ai</span></h3>
+        <p>AI INTERN</p>
+        <small>JUL 2026 — PRESENT</small>
       </div>
-    </section>
-
-    <section id="contact">
-      <h2 class="reveal">Contact</h2>
-      <div class="rule"></div>
-      <div class="contact-links">
-        <a class="icon-btn reveal" href="https://www.linkedin.com/in/akshitasharma7/" target="_blank">LinkedIn</a>
-        <a class="icon-btn reveal" href="https://github.com/akxe449" target="_blank">GitHub</a>
-        <a class="icon-btn reveal" href="mailto:akshita.sharma7work@gmail.com">Gmail</a>
-        <a class="icon-btn reveal" href="https://x.com/Akshita_07905" target="_blank">X</a>
+      <div class="exp-content">
+        <div class="exp-lead">
+          <span class="tag">VOICE AI</span>
+          <h3>Production-grade agent engineering.</h3>
+          <p>Engineering a voice AI agent in <strong>LangGraph</strong> with LLM orchestration, tool-calling, conversational state management and backend API workflows for real-time task automation.</p>
+        </div>
+        <div class="exp-grid">
+          <div><b>09</b><span>deep learning models under production deployment & lifecycle management</span></div>
+          <div><b>MLOps</b><span>model registry, artifact management, Dockerized deployment & cloud inference</span></div>
+          <div><b>STACK</b><span>MLflow · Docker · AWS · FastAPI</span></div>
+        </div>
       </div>
-    </section>
-  </main>
+    </article>
+  </section>
 
-  <footer>
-    <div class="container">© 2025 Akshita Sharma</div>
-  </footer>
+  <!-- 02 / FEATURED MOAT -->
+  <section class="section featured-section" id="featured">
+    <div class="section-head compact">
+      <div class="section-no">02</div>
+      <div><p>FEATURED WORK</p><h2>THE<br><em>MOAT.</em></h2></div>
+      <p class="head-note">Not a collection of tutorial projects. These are the builds that best show how I think about systems, models and measurable outcomes.</p>
+    </div>
 
-  <script>
-    const links = [...document.querySelectorAll('.nav-links a')];
-    const targets = links.map(a => document.querySelector(a.getAttribute('href')));
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY + 90;
-      let idx = 0;
-      targets.forEach((sec,i) => { if (sec && sec.offsetTop <= y) idx = i; });
-      links.forEach((a,i) => a.classList.toggle('active', i === idx));
-    });
+    <article class="feature-card">
+      <div class="feature-meta">
+        <span>01 / VITICARE</span>
+        <span>FASTAPI · PYTORCH · RAG</span>
+      </div>
+      <div class="feature-title">
+        <h3>VitiCare</h3>
+        <p>DISEASE MONITORING PLATFORM</p>
+      </div>
+      <div class="feature-body">
+        <div class="big-metric"><b>92%</b><span>IoU</span><small>automated lesion segmentation</small></div>
+        <div class="feature-copy">
+          <p class="large">A multi-agent clinical workflow that combines <strong>Vision, Research and Report Agents</strong> through FastAPI, generating end-to-end reports in under <strong>5 seconds</strong>.</p>
+          <div class="evidence-row">
+            <div><b>500+</b><span>peer-reviewed studies in evidence-grounded RAG</span></div>
+            <div><b>0.89</b><span>context precision using Claude</span></div>
+            <div><b>&lt;5s</b><span>end-to-end report generation</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="feature-foot"><span>OPENCV / PYTORCH / RAG / CLAUDE</span><a href="https://github.com/akxe449/Viticare" target="_blank" rel="noreferrer">VIEW VITICARE ↗ ↗</a></div>
+    </article>
+  </section>
 
-    const io = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
-    }, { threshold: .12 });
-    document.querySelectorAll('.reveal, .card, .chip').forEach(el => io.observe(el));
-    const chips = [...document.querySelectorAll('.chip')];
-    chips.forEach((chip, i) => chip.style.transitionDelay = (120 + i * 70) + 'ms');
+  <!-- 03 / SECONDARY BUILDS -->
+  <section class="section builds">
+    <div class="section-head compact">
+      <div class="section-no">03</div>
+      <div><p>OTHER BUILDS</p><h2>DIFFERENT<br><em>PROBLEMS.</em></h2></div>
+    </div>
 
-    const progress = document.getElementById('progress');
-    const setProgress = () => {
-      const h = document.documentElement;
-      const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight);
-      progress.style.width = (scrolled * 100) + '%';
-    };
-    setProgress();
-    window.addEventListener('scroll', setProgress, { passive: true });
-    window.addEventListener('resize', setProgress);
-      // Parallax blobs (mouse + scroll)
-    const blobs = document.querySelectorAll('.blob');
-    const lerp = (a,b,t)=>a+(b-a)*t;
-    let mouseX = 0, mouseY = 0;
-    window.addEventListener('mousemove', (e)=>{ mouseX = e.clientX / window.innerWidth - 0.5; mouseY = e.clientY / window.innerHeight - 0.5; });
-    window.addEventListener('scroll', ()=>{ /* just triggers repaint */ });
-    const animateBlobs = ()=>{
-      blobs.forEach((el, i)=>{
-        const s = (i+1)*4; // subtle strength
-        const tx = lerp(0, mouseX * s * 12, .08);
-        const ty = lerp(0, mouseY * s * 12, .08);
-        el.style.transform = `translate(${tx}px, ${ty}px)`;
-      });
-      requestAnimationFrame(animateBlobs);
-    };
-    animateBlobs();
-  </script>
+    <div class="build-list">
+      <article class="build-row" id="systems">
+        <div class="build-no">02</div>
+        <div class="build-main">
+          <div class="build-title"><h3>AuthMate</h3><span>SECURITY / DESKTOP</span></div>
+          <p>Secure 2FA desktop app for Codeforces, open-sourced after an ICPC World Finalist’s account was compromised. Built with a native Rust core and Tauri; uses AES, RSA and JWT with OS-level credential/session handling.</p>
+          <div class="mini-tags">TYPESCRIPT · RUST · TAURI · REACT · AES · RSA · JWT</div>
+        </div>
+        <div class="build-stat"><b>50+</b><span>USERS</span><a href="https://github.com/Authmate2fa/AuthMate-Desktop" target="_blank" rel="noreferrer">VIEW AUTHMATE ↗</a></div>
+      </article>
+
+      <article class="build-row" id="research">
+        <div class="build-no">03</div>
+        <div class="build-main">
+          <div class="build-title"><h3>Price of Anarchy</h3><span>RESEARCH / RL</span></div>
+          <p>Frank-Wolfe traffic assignment simulator computing Wardrop equilibria and social optima across Pigou, Braess, grid, Erdős–Rényi and Barabási–Albert topologies. Benchmarked ε-Greedy, UCB1 and Thompson Sampling agents.</p>
+          <div class="mini-tags">PYTHON · NETWORKX · RL · GAME THEORY</div>
+        </div>
+        <div class="build-stat"><b>15.3%</b><span>PoA IMPROVEMENT<br>ON BRAESS</span><a href="https://github.com/akxe449/Price-of-Anarchy" target="_blank" rel="noreferrer">VIEW POA ↗</a></div>
+      </article>
+
+      <article class="build-row">
+        <div class="build-no">04</div>
+        <div class="build-main">
+          <div class="build-title"><h3>CAPTCHA Recognition</h3><span>COMPUTER VISION</span></div>
+          <p>Generated 20,000+ synthetic CAPTCHAs with noise, rotation and font variations. CNN and CRNN-CTC models were evaluated on standard, distorted and OOD inputs using accuracy, CER, exact match and CTC loss.</p>
+          <div class="mini-tags">PYTORCH · CNN · CRNN-CTC · COMPUTER VISION</div>
+        </div>
+        <div class="build-stat"><b>97%</b><span>STANDARD<br>ACCURACY</span><a href="https://github.com/akxe449/Captcha_codebase" target="_blank" rel="noreferrer">VIEW CAPTCHA ↗</a></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 04 / STACK -->
+  <section class="section stack">
+    <div class="section-head compact">
+      <div class="section-no">04</div>
+      <div><p>ENGINEERING STACK</p><h2>THE<br><em>TOOLBOX.</em></h2></div>
+    </div>
+    <div class="stack-grid">
+      <div class="stack-block"><small>LANGUAGES</small><p>Python / C / C++ / Java / TypeScript / Rust / SQL</p></div>
+      <div class="stack-block"><small>AI + BACKEND</small><p>PyTorch / RAG / LangChain / LangGraph / FastAPI / Streamlit / MLflow / NetworkX</p></div>
+      <div class="stack-block"><small>DEV + CLOUD</small><p>Git / GitHub / Docker / Kubernetes / DVC / AWS / Tauri / React / VS Code / LaTeX</p></div>
+    </div>
+  </section>
+
+  <!-- 05 / EDUCATION -->
+  <section class="section education">
+    <div class="edu-line"><span>05 / EDUCATION</span><span>AMITY UNIVERSITY NOIDA</span></div>
+    <div class="edu-main"><h2>B.TECH<br><em>COMPUTER SCIENCE</em></h2><p>AUG 2024 — MAY 2028<br>NOIDA, INDIA</p></div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <p>06 / CONTACT</p>
+      <h2>BUILD<br><em>WITH ME.</em></h2>
+      <div class="contact-row">
+        <a href="mailto:akshita.sharma7work@gmail.com">AKSHITA.SHARMA7WORK@GMAIL.COM ↗</a>
+        <a href="https://www.linkedin.com/in/akshitasharma7" target="_blank" rel="noreferrer">LINKEDIN ↗</a>
+        <a href="https://github.com/akxe449" target="_blank" rel="noreferrer">GITHUB ↗</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><span>AKSHITA_SHARMA / 2026</span><span>AI · SYSTEMS · ENGINEERING</span><span>NO TEMPLATES. NO FLUFF.</span></footer>
+<script src="script.js"></script>
 </body>
 </html>
-
