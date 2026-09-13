@@ -1,33 +1,17 @@
-// Dark/Light Mode Toggle
-const toggle = document.getElementById('toggle-theme');
-toggle.addEventListener('click', () => {
-  document.body.classList.toggle('light-mode');
-  toggle.textContent = document.body.classList.contains('light-mode') ? '🌙' : '☀️';
+document.addEventListener("pointermove", e => {
+  document.documentElement.style.setProperty("--mx", e.clientX + "px");
+  document.documentElement.style.setProperty("--my", e.clientY + "px");
 });
 
-// Smooth active link switching
-const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('.nav-link');
+const sections = [...document.querySelectorAll("section[id]")];
+const navLinks = [...document.querySelectorAll(".nav-center a")];
 
-window.addEventListener('scroll', () => {
-  let current = '';
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 150;
-    if (pageYOffset >= sectionTop) {
-      current = section.getAttribute('id');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + entry.target.id));
     }
   });
-  navLinks.forEach(link => {
-    link.classList.remove('active');
-    if (link.getAttribute('href').includes(current)) {
-      link.classList.add('active');
-    }
-  });
-});
+}, {rootMargin:"-35% 0px -55% 0px"});
 
-// Contact form
-document.getElementById('contact-form').addEventListener('submit', function(e){
-  e.preventDefault();
-  alert('Thanks for your message! I will get back to you soon.');
-  this.reset();
-});
+sections.forEach(s => io.observe(s));
