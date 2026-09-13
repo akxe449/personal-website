@@ -1,2 +1,3 @@
-Find the deployed website on vercel!
-https://personal-websiteakshita-sharma-27.vercel.app
+Find the deployed website here!
+
+https://akshita-sharma-portfolio.netlify.app/
